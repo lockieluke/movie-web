@@ -142,7 +142,9 @@ export function decodeTMDBId(
   };
 }
 
-const baseURL = "https://api.themoviedb.org/3";
+const baseURL = `${
+  import.meta.env.VITE_CORS_PROXY_URL
+}?destination=https://api.themoviedb.org/3`;
 
 const headers = {
   accept: "application/json",
