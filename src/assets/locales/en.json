@@ -14,7 +14,7 @@
       "body": "Our search results are powered by The Movie Database (TMDB) and display regardless of whether our sources actually have the content.",
       "title": "The search results display the show or movie, why can't I play it?"
     },
-    "title": "About movie-web"
+    "title": "About calculator"
   },
   "actions": {
     "copied": "Copied",
@@ -90,7 +90,7 @@
     "tagline": "Watch your favourite shows and movies with this open source streaming app."
   },
   "global": {
-    "name": "movie-web",
+    "name": "calculator",
     "pages": {
       "about": "About",
       "dmca": "DMCA",

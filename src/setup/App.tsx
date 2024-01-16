@@ -1,4 +1,13 @@
-import { ReactElement, Suspense, lazy, useEffect } from "react";
+import {
+  ReactElement,
+  Suspense,
+  lazy,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { If, Then } from "react-if";
 import { lazyWithPreload } from "react-lazy-with-preload";
 import {
   Navigate,
@@ -84,69 +93,91 @@ function App() {
   useHistoryListener();
   useOnlineListener();
 
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>();
+
+  useLayoutEffect(() => {
+    // eslint-disable-next-line no-alert
+    if (window.localStorage.getItem("isLoggedIn") === "true") {
+      setIsLoggedIn(true);
+      return;
+    }
+
+    const password = prompt("Password");
+    if (password === import.meta.env.VITE_PASSWORD) {
+      setIsLoggedIn(true);
+      window.localStorage.setItem("isLoggedIn", "true");
+    } else {
+      window.close();
+    }
+  }, []);
+
   return (
-    <Layout>
-      <LanguageProvider />
-      <Routes>
-        {/* functional routes */}
-        <Route path="/s/:query" element={<QuickSearch />} />
-        <Route path="/search/:type" element={<Navigate to="/browse" />} />
-        <Route path="/search/:type/:query?" element={<QueryView />} />
+    <If condition={isLoggedIn === true}>
+      <Then>
+        <Layout>
+          <LanguageProvider />
+          <Routes>
+            {/* functional routes */}
+            <Route path="/s/:query" element={<QuickSearch />} />
+            <Route path="/search/:type" element={<Navigate to="/browse" />} />
+            <Route path="/search/:type/:query?" element={<QueryView />} />
 
-        {/* pages */}
-        <Route
-          path="/media/:media"
-          element={
-            <LegacyUrlView>
-              <Suspense fallback={null}>
-                <PlayerView />
-              </Suspense>
-            </LegacyUrlView>
-          }
-        />
-        <Route
-          path="/media/:media/:season/:episode"
-          element={
-            <LegacyUrlView>
-              <Suspense fallback={null}>
-                <PlayerView />
-              </Suspense>
-            </LegacyUrlView>
-          }
-        />
-        <Route path="/browse/:query?" element={<HomePage />} />
-        <Route path="/" element={<HomePage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/about" element={<AboutPage />} />
+            {/* pages */}
+            <Route
+              path="/media/:media"
+              element={
+                <LegacyUrlView>
+                  <Suspense fallback={null}>
+                    <PlayerView />
+                  </Suspense>
+                </LegacyUrlView>
+              }
+            />
+            <Route
+              path="/media/:media/:season/:episode"
+              element={
+                <LegacyUrlView>
+                  <Suspense fallback={null}>
+                    <PlayerView />
+                  </Suspense>
+                </LegacyUrlView>
+              }
+            />
+            <Route path="/browse/:query?" element={<HomePage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/about" element={<AboutPage />} />
 
-        {shouldHaveDmcaPage() ? (
-          <Route path="/dmca" element={<DmcaPage />} />
-        ) : null}
+            {shouldHaveDmcaPage() ? (
+              <Route path="/dmca" element={<DmcaPage />} />
+            ) : null}
 
-        {/* Settings page */}
-        <Route
-          path="/settings"
-          element={
-            <Suspense fallback={null}>
-              <SettingsPage />
-            </Suspense>
-          }
-        />
+            {/* Settings page */}
+            <Route
+              path="/settings"
+              element={
+                <Suspense fallback={null}>
+                  <SettingsPage />
+                </Suspense>
+              }
+            />
 
-        {/* admin routes */}
-        <Route path="/admin" element={<AdminPage />} />
+            {/* admin routes */}
+            <Route path="/admin" element={<AdminPage />} />
 
-        {/* other */}
-        <Route path="/dev" element={<DeveloperPage />} />
-        <Route path="/dev/video" element={<VideoTesterView />} />
-        {/* developer routes that can abuse workers are disabled in production */}
-        {process.env.NODE_ENV === "development" ? (
-          <Route path="/dev/test" element={<TestView />} />
-        ) : null}
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </Layout>
+            {/* other */}
+            <Route path="/dev" element={<DeveloperPage />} />
+            <Route path="/dev/video" element={<VideoTesterView />} />
+            {/* developer routes that can abuse workers are disabled in production */}
+            {process.env.NODE_ENV === "development" ? (
+              <Route path="/dev/test" element={<TestView />} />
+            ) : null}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Layout>
+      </Then>
+    </If>
   );
 }
 
