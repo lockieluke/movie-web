@@ -66,9 +66,9 @@ export default defineConfig(({ mode }) => {
           "safari-pinned-tab.svg",
         ],
         manifest: {
-          name: "movie-web",
-          short_name: "movie-web",
-          description: "The place for your favourite movies & shows",
+          name: "calculator",
+          short_name: "calculator",
+          description: "Where you can do maths",
           theme_color: "#120f1d",
           background_color: "#120f1d",
           display: "standalone",
