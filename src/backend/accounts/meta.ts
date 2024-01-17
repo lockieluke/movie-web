@@ -1,4 +1,4 @@
-import { ofetch } from "ofetch";
+import { mwFetch } from "@/backend/helpers/fetch";
 
 export interface MetaResponse {
   version: string;
@@ -9,7 +9,7 @@ export interface MetaResponse {
 }
 
 export async function getBackendMeta(url: string): Promise<MetaResponse> {
-  return ofetch<MetaResponse>("/meta", {
+  return mwFetch<MetaResponse>("/meta", {
     baseURL: url,
   });
 }

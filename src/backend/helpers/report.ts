@@ -1,14 +1,14 @@
 import { ScrapeMedia } from "@movie-web/providers";
 import { nanoid } from "nanoid";
-import { ofetch } from "ofetch";
 import { useCallback } from "react";
 
+import { mwFetch } from "@/backend/helpers/fetch";
 import { ScrapingItems, ScrapingSegment } from "@/hooks/useProviderScrape";
 import { PlayerMeta } from "@/stores/player/slices/source";
 
 // for anybody who cares - these are anonymous metrics.
 // They are just used for figuring out if providers are broken or not
-const metricsEndpoint = "https://backend.movie-web.app/metrics/providers";
+const metricsEndpoint = `https://backend.movie-web.app/metrics/providers`;
 const captchaMetricsEndpoint = "https://backend.movie-web.app/metrics/captcha";
 const batchId = () => nanoid(32);
 
@@ -33,7 +33,7 @@ function getStackTrace(error: Error, lines: number) {
 }
 
 export async function reportProviders(items: ProviderMetric[]): Promise<void> {
-  return ofetch(metricsEndpoint, {
+  return mwFetch(metricsEndpoint, {
     method: "POST",
     body: {
       items,
@@ -144,7 +144,7 @@ export function useReportProviders() {
 }
 
 export function reportCaptchaSolve(success: boolean) {
-  ofetch(captchaMetricsEndpoint, {
+  mwFetch(captchaMetricsEndpoint, {
     method: "POST",
     body: {
       success,

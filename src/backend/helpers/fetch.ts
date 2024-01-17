@@ -18,10 +18,6 @@ export function makeUrl(url: string, data: Record<string, string>) {
   return parsedUrl;
 }
 
-export function mwFetch<T>(url: string, ops: P<T>[1] = {}): R<T> {
-  return baseFetch<T>(url, ops);
-}
-
 export async function singularProxiedFetch<T>(
   proxyUrl: string,
   url: string,
@@ -76,4 +72,8 @@ export async function singularProxiedFetch<T>(
 
 export function proxiedFetch<T>(url: string, ops: P<T>[1] = {}): R<T> {
   return singularProxiedFetch<T>(getLoadbalancedProxyUrl(), url, ops);
+}
+
+export function mwFetch<T>(url: string, ops: P<T>[1] = {}): R<T> {
+  return proxiedFetch<T>(url, ops);
 }
