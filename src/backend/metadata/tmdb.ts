@@ -15,7 +15,7 @@ import {
   TMDBSeason,
   TMDBSeasonMetaResult,
   TMDBShowData,
-  TMDBShowSearchResult,
+  TMDBShowSearchResult
 } from "./types/tmdb";
 import { mwFetch } from "../helpers/fetch";
 
@@ -142,9 +142,7 @@ export function decodeTMDBId(
   };
 }
 
-const baseURL = `${
-  import.meta.env.VITE_CORS_PROXY_URL
-}?destination=https://api.themoviedb.org/3`;
+const baseURL = "https://api.themoviedb.org/3";
 
 const headers = {
   accept: "application/json",
@@ -152,14 +150,13 @@ const headers = {
 };
 
 async function get<T>(url: string, params?: object): Promise<T> {
-  const res = await mwFetch<any>(encodeURI(url), {
+  return mwFetch<any>(encodeURI(url), {
     headers,
     baseURL,
     params: {
       ...params,
     },
   });
-  return res;
 }
 
 export async function multiSearch(
@@ -172,12 +169,11 @@ export async function multiSearch(
     page: 1,
   });
   // filter out results that aren't movies or shows
-  const results = data.results.filter(
+  return data.results.filter(
     (r) =>
       r.media_type === TMDBContentTypes.MOVIE ||
       r.media_type === TMDBContentTypes.TV,
   );
-  return results;
 }
 
 export async function generateQuickSearchMediaUrl(

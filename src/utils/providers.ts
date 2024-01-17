@@ -24,6 +24,7 @@ function makeLoadbalancedList(getter: () => string[]) {
 }
 
 export const getLoadbalancedProxyUrl = makeLoadbalancedList(getProxyUrls);
+export const getLoadbalancedProxyFetchUrl = `${getLoadbalancedProxyUrl()}?destination=`;
 export const getLoadbalancedProviderApiUrl =
   makeLoadbalancedList(getProviderApiUrls);
 
