@@ -10,6 +10,7 @@ import { Transition } from "@/components/utils/Transition";
 import { useAuth } from "@/hooks/auth/useAuth";
 import { conf } from "@/setup/config";
 import { useAuthStore } from "@/stores/auth";
+import { openEmbeddedDevtools } from "@/utils/debug";
 
 function Divider() {
   return <hr className="border-0 w-full h-px bg-dropdown-border" />;
@@ -154,6 +155,16 @@ export function LinksDropdown(props: { children: React.ReactNode }) {
               {t("navigation.menu.logout")}
             </DropdownLink>
           ) : null}
+          <Divider />
+          <DropdownLink
+            onClick={() => {
+              openEmbeddedDevtools();
+              setOpen(false);
+            }}
+            icon={Icons.WAND}
+          >
+            Open DevTools
+          </DropdownLink>
           <Divider />
           <div className="my-4 flex justify-center items-center gap-4">
             <CircleDropdownLink
