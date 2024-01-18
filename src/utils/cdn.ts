@@ -1,5 +1,4 @@
 import { conf } from "@/setup/config";
-import { getLoadbalancedProxyFetchUrl } from "@/utils/providers";
 
 export function processCdnLink(url: string): string {
   const parsedUrl = new URL(url);
@@ -9,7 +8,7 @@ export function processCdnLink(url: string): string {
       parsedUrl.hostname = after;
       parsedUrl.port = "";
       parsedUrl.protocol = "https://";
-      return `${getLoadbalancedProxyFetchUrl}${parsedUrl.toString()}`;
+      return parsedUrl.toString();
     }
   }
 
